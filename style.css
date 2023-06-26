@@ -1,0 +1,49 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+.game-screen {
+    border: solid black;
+    width: 400px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.player, .enemy {
+    border: solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.enemy {
+    transform: rotateX(180deg);
+}
+
+.player-sprite, .enemy-sprite {
+    border: solid blue;
+    width: 50px;
+    height: 50px;
+}
+
+.player-projectile, .enemy-projectile, .projectile {
+    border: solid green;
+    width: 20px;
+    height: 20px;
+    animation: pew-pew 5s infinite;
+}
+
+@keyframes pew-pew {
+    100% {
+        transform: translateY(-300px);
+    }
+}
+
+
+.kaboom {
+    border: solid red;
+}
