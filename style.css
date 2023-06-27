@@ -11,6 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative
 }
 
 .player, .enemy {
@@ -18,7 +19,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    width: 100%;
+}
+
+.player {
+    position: absolute;
+    bottom: 0px;
 }
 
 .enemy {
@@ -39,11 +45,11 @@ body {
     animation: pew-pew 5s infinite;
 }
 
-@keyframes pew-pew {
+/* @keyframes pew-pew {
     100% {
         transform: translateY(-300px);
     }
-}
+} */
 
 .kaboom {
     border: solid red;
