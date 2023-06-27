@@ -1,6 +1,7 @@
 body {
     display: flex;
     justify-content: center;
+    margin: 0px;
 }
 
 .game-screen {
@@ -28,6 +29,7 @@ body {
     border: solid blue;
     width: 50px;
     height: 50px;
+    position: relative;
 }
 
 .player-projectile, .enemy-projectile, .projectile {
@@ -42,7 +44,6 @@ body {
         transform: translateY(-300px);
     }
 }
-
 
 .kaboom {
     border: solid red;
