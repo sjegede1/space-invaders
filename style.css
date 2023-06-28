@@ -2,29 +2,19 @@ body {
     display: flex;
     justify-content: center;
     margin: 0px;
+    color: white;
 }
 
 .game-screen {
-    border: solid black;
+    /* border: solid black; */
+    background-color: grey;
     width: 400px;
     height: 600px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    position: relative
-}
-
-.player, .enemy {
-    border: solid red;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.player {
-    position: absolute;
-    bottom: 0px;
+    /* justify-content: space-between; */
+    position: relative;
+    margin: 50px;
 }
 
 .enemy {
@@ -32,25 +22,39 @@ body {
 }
 
 .player-sprite, .enemy-sprite {
-    border: solid blue;
+    /* border: solid blue; */
+    background-color: blue;
     width: 50px;
     height: 50px;
-    position: relative;
+    position: absolute;
 }
 
-.player-projectile, .enemy-projectile, .projectile {
-    border: solid green;
+.player-sprite {
+    bottom: 0px;
+}
+
+.enemy-sprite {
+    top: 0px;
+}
+
+.projectile {
+    /* border: solid green; */
+    background-color: yellow;
     width: 20px;
-    height: 20px;
-    animation: pew-pew 5s infinite;
+    height: 20px; 
+    position: absolute;
 }
 
-/* @keyframes pew-pew {
-    100% {
-        transform: translateY(-300px);
+.projectile-shoot {
+    animation: projectile-shoot 1s linear 50ms 1 forwards;
+}
+
+@keyframes projectile-shoot {
+    0% {
+        transform: translateY(0px);
     }
-} */
-
-.kaboom {
-    border: solid red;
+    100% {
+        transform: translateY(-500px);
+    }
 }
+
