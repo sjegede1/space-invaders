@@ -1,8 +1,11 @@
 body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
     margin: 0px;
     color: white;
+    text-align: center;
 }
 
 .game-screen {
@@ -14,7 +17,7 @@ body {
     flex-direction: column;
     /* justify-content: space-between; */
     position: relative;
-    margin: 50px;
+    margin: 10px;
 }
 
 .enemy {
@@ -35,6 +38,11 @@ body {
 
 .enemy-sprite {
     top: 0px;
+    background-color: red;
+}
+
+.player-sprite-img {
+    height: 100%;
 }
 
 .projectile {
@@ -53,8 +61,13 @@ body {
     0% {
         transform: translateY(0px);
     }
+    99% {
+        transform: translateY(-500px);
+        opacity: 100%;
+    }
     100% {
         transform: translateY(-500px);
+        opacity: 0%;
     }
 }
 

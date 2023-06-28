@@ -1,4 +1,4 @@
-# PROJECT 1: Space Shooter
+# PROJECT: Space Shooter
 ## Game Description
 The game is built with Vanilla Javascript, HTML and CSS only.
 It is a space shooter based on asssets from the game <a href="https://wikiheartexelica.fandom.com/wiki/Sengeki_Striker">Sengeki Striker by Kaneko</a>.

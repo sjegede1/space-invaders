@@ -8,10 +8,14 @@
   </head>
   <body>
     <div class="game-screen">
-      <div class="enemy-sprite enemy">Bad Guy</div>
+      <!-- <div class="enemy-sprite enemy">Bad Guy</div> -->
 
-      <div class="player-sprite">Good Guy</div>
+      <div class="player-sprite">
+        <img src="https://media2.giphy.com/media/PqjTdvXImZQfcmTYEO/giphy.gif" alt="" class="player-sprite-img">
+      </div>
     </div>
+
+    <button onclick="enemy = new Enemy();enemy.init() ">SPAWN ENEMY</button>
 
     <script src="app.js"></script>
   </body>
