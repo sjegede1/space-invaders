@@ -10,12 +10,13 @@
     <div class="game-screen">
       <!-- <div class="enemy-sprite enemy">Bad Guy</div> -->
 
-      <div class="player-sprite">
-        <img src="https://media2.giphy.com/media/PqjTdvXImZQfcmTYEO/giphy.gif" alt="" class="player-sprite-img">
-      </div>
+      <!-- <div class="player-sprite">
+        <img src="./assets/sprites/players/players-player-1-6.png" alt="" class="player-sprite-img">
+      </div> -->
     </div>
 
-    <button onclick="enemy = new Enemy();enemy.init() ">SPAWN ENEMY</button>
+    <button onclick="new Enemy()">SPAWN ENEMY</button>
+    <button onclick="const player2 = new Player(playerFeatures[1])">Player 2</button>
 
     <script src="app.js"></script>
   </body>

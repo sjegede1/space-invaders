@@ -34,6 +34,7 @@ body {
 
 .player-sprite {
     bottom: 0px;
+    
 }
 
 .enemy-sprite {
@@ -68,6 +69,21 @@ body {
     100% {
         transform: translateY(-500px);
         opacity: 0%;
+    }
+}
+
+.player-1-move-left {
+    animation: player-1-move-left 1s linear forwards;
+}
+@keyframes player-1-move-left {
+    0% {
+        content: url("./assets/sprites/players/players-player-.png");
+    }
+    50% {
+        content: url("./assets/sprites/players/players-player-1-6.png");
+    }
+    100% {
+        content: url("./assets/sprites/players/players-player-1-1.png");
     }
 }
 

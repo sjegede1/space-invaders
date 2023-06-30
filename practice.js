@@ -1,108 +1,354 @@
 // DOM Elements
-const goodGuy = document.querySelector('.player-sprite');
-let goodGuyPosX = 0;
+const playerSprite = document.querySelector(".player-sprite");
+const gameScreen = document.querySelector(".game-screen");
+const gameScreenRect = gameScreen.getBoundingClientRect();
+let frameRateDelay = 17 * 0;
+const projectileDiv = document.createElement("div");
+projectileDiv.className = "projectile";
+const enemyDiv = document.createElement("div");
+enemyDiv.classList = "enemy-sprite";
 
-// Functions
-const move = (direction) => {
-    // direction -> 1: move right; 0: move left
-    switch (direction) {
-        case 0:
-            goodGuyPosX -= 5;
-            goodGuy.style.left = goodGuyPosX + 'px'
-            break;
-        case 1:
-            goodGuyPosX += 5;
-            goodGuy.style.left = goodGuyPosX + 'px'
-            break;
-        default:
-            console.log('Button Untracked')
+let enemies = [];
+let playerProjectiles = [];
+let enemyProjectiles = [];
 
-    }
-}
-
-const registerKeyPressed = (event) => {
-    switch (event.key) {
-        case 'ArrowRight':
-            // Move Right stops us from moving left
-            keyCodeMap['ArrowRight'].pressed = true;
-            keyCodeMap['ArrowLeft'].pressed = false;
-            move(1)
-            console.log('Move Right KEYDOWN')
-            break;
-        case 'ArrowLeft':
-            keyCodeMap['ArrowLeft'].pressed = true;
-            keyCodeMap['ArrowRight'].pressed = false;
-            move(0)
-            console.log('Move Left KEYDOWN')
-            break;
-        case 'Shift':
-            keyCodeMap[event.key].pressed = true;
-            // Continue moving if already moving
-            if (keyCodeMap.ArrowRight.pressed) {
-                console.log("Shift+ArrowRight KEYDOWN");
-                move(1);
-            } else if (keyCodeMap.ArrowLeft.pressed) {
-                console.log("Shift+ArrowLeft KEYDOWN");
-                move(0);
-            } else {
-                console.log("Shift KEYDOWN")
-            }
-            break;
-        default:
-            console.log(event.key, " KEYDOWN not configured")
-    }
-}
-
-
-// Keyboard event listeners
+// OBJECTS AND GLOBAL VARIABLES
 keyCodeMap = {
-    ArrowRight: {pressed: false, move() {move(1)}},
-    ArrowLeft:  {pressed: false, move() {move(0)}},
-    Shift:      {pressed: false},
+  ArrowRight: { pressed: false },
+  ArrowLeft: { pressed: false },
+  Shift: { pressed: false },
+  Space: { pressed: false },
+};
+// Enemy Types and characteristics
+enemiesFeatures = [
+    {
+        health: [10,15],
+        period: [500,700],
+        src: [],
+        width: 20,
+        height: 20,
+    },
+    {
+
+    }
+]
+
+// Power ups for Player
+
+
+// Event Listeners
+document.addEventListener("keydown", (event) => {
+  switch (event.key) {
+    case "ArrowRight":
+      console.log(event.key, " KEYDOWN");
+      keyCodeMap[event.key].pressed = 1;
+      break;
+    case "ArrowLeft":
+      console.log(event.key, " KEYDOWN");
+      keyCodeMap[event.key].pressed = 1;
+      break;
+    case "Shift":
+      console.log(event.key, " KEYDOWN");
+      keyCodeMap[event.key].pressed = 1;
+      break;
+    case " ":
+      console.log(event.code, " KEYDOWN");
+      keyCodeMap[event.code].pressed = 1;
+      break;
+    default:
+      console.log(event.key, " KEYDOWN Not configured");
+  }
+});
+
+document.addEventListener("keyup", (event) => {
+  switch (event.key) {
+    case "ArrowRight":
+      console.log(event.key, " KEYUP");
+      keyCodeMap[event.key].pressed = 0;
+      break;
+    case "ArrowLeft":
+      console.log(event.key, " KEYUP");
+      keyCodeMap[event.key].pressed = 0;
+      break;
+    case "Shift":
+      console.log(event.key, " KEYUP");
+      keyCodeMap[event.key].pressed = 0;
+      break;
+    case " ":
+      console.log(event.code, " KEYUP");
+      keyCodeMap[event.code].pressed = 0;
+      break;
+    default:
+      console.log(event.key, " KEYDOWN Not configured");
+  }
+});
+
+// Player Class
+class Player {
+  constructor() {
+    this.health = 100;
+    this.speed = 5; // Number of pixels we move on each press
+    let { width, height } = playerSprite.getBoundingClientRect();
+    this.positionX = 0;
+    this.positionY = height;
+    this.width = width;
+    this.height = height;
+    this.projectiles = [];
+    this.radius = Math.min(this.width / 2, this.height / 2);
+    this.div = playerSprite;
+  }
+
+  checkBoundaries = () => {
+    let currentPosition = playerSprite.getBoundingClientRect();
+    this.positionX = currentPosition.x - gameScreenRect.x;
+    this.positionY =
+      gameScreenRect.y + gameScreenRect.height - currentPosition.y;
+    // Check Left and Right
+    if (this.positionX < 0) {
+      playerSprite.style.left = "1px";
+      console.log("Left Boundary");
+      return false;
+    } else if (this.positionX > gameScreenRect.width - this.width) {
+      playerSprite.style.left = `${gameScreenRect.width - this.width - 1}px`;
+      console.log("Right Boundary");
+      return false;
+    }
+    return true;
+  };
+
+  move = () => {
+    if (!this.checkBoundaries()) {
+      return {};
+    }
+
+    if (keyCodeMap.ArrowRight.pressed && keyCodeMap.ArrowLeft.pressed) {
+      console.log("RIGHT+LEFT");
+      return {};
+    } else if (keyCodeMap.ArrowRight.pressed) {
+      this.positionX += this.speed;
+      playerSprite.style.left = this.positionX + "px";
+    } else if (keyCodeMap.ArrowLeft.pressed) {
+      this.positionX -= this.speed;
+      playerSprite.style.left = `${this.positionX}px`;
+    }
+  };
+
+  shoot = () => {
+    let projectile = new Projectile(this);
+
+    if (keyCodeMap.Space.pressed) {
+      projectile.init();
+      projectile.fire();
+      keyCodeMap.Space.pressed = 0;
+      playerProjectiles.push(projectile);
+      console.log("FIRE!!");
+    }
+  };
+
+  update = () => {
+    //Log all changes in the character
+    this.move();
+    this.shoot();
+  };
 }
 
-// // STRATEGY 1 - move left and right on press (This works perfectly)
-// document.addEventListener('keydown', (event) => {
-//     switch (event.key) {
-//         case 'ArrowRight':
-//             keyCodeMap[event.key].pressed = true;
-//             move(1)
-//             console.log('Move Right')
-//             break;
-//         case 'ArrowLeft':
-//             keyCodeMap[event.key].pressed = true;
-//             move(0)
-//             console.log('Move Left')
-//             break;
-//     }
-// })
+// Enemy Class
+class Enemy {
+  constructor() {
+    this.health = 100;
+    this.div = enemyDiv.cloneNode();
+    this.width;
+    this.height;
+    this.projectiles = [];
+    this.positionX = 0;
+    this.positionY = 0;
+    this.radius;
+    this.start = new Date(); //start of enemy creation
+    this.period = 150;
+  }
 
-// STRATEGY 2 - on key press check what has been pressed and use combo of conditions to create events
-// STEP 1: register key press
-document.addEventListener('keydown', (event) => {
-    registerKeyPressed(event)
-    if (keyCodeMap.ArrowRight.pressed && keyCodeMap.Shift.pressed) {
-        console.log('SHIFT and RIGHT')
+  init = () => {
+    gameScreen.append(this.div);
+    enemies.push(this);
+    let { width, height } = this.div.getBoundingClientRect();
+    this.width = width;
+    this.height = height;
+    this.radius = Math.min(this.width / 2, this.height / 2);
+  };
+
+  move = () => {
+    let Amp = 0.5 * (gameScreenRect.width - this.width);
+    let freq = 1 / this.period;
+    let currentTime = new Date() - this.start;
+    this.positionX = -Amp * Math.cos(freq * currentTime) + Amp;
+
+    this.div.style.left = `${this.positionX}px`;
+  };
+
+  shoot = () => {
+    let projectile = new Projectile(this);
+
+    if (keyCodeMap.Shift.pressed) {
+      projectile.init();
+      projectile.fire();
+      keyCodeMap.Shift.pressed = 0;
+      enemyProjectiles.push(projectile);
+      console.log("ENEMY FIRE!! Shift KeyPRess");
     }
-})
-document.addEventListener('keyup', (event) => {
-    switch (event.key) {
-        case 'ArrowRight':
-            keyCodeMap[event.key].pressed = false;
-            console.log('Move Right KEYUP')
-            break;
-        case 'ArrowLeft':
-            keyCodeMap[event.key].pressed = false;
-            console.log('Move Left KEYUP')
-            break;
-        case 'Shift':
-            keyCodeMap[event.key].pressed = false;
-            console.log('Shift KEYUP')
-            break;
-        default:
-            console.log(event.key," KEYUP not configured")
+    
+
+
+    projectile.init();
+    projectile.fire();
+    enemyProjectiles.push(projectile);
+    // console.log("FIRE!! ");
+  };
+
+  update = () => {
+    //Log all changes in the character
+    this.move();
+  };
+}
+
+// Projectile Class
+class Projectile {
+  constructor(Player) {
+    this.player = Player;
+    this.speed = 1;
+    this.div = projectileDiv.cloneNode();
+    this.positionX = this.player.positionX;
+    this.positionY = this.player.positionY;
+    this.width;
+    this.height;
+    this.radius;
+  }
+
+  init = () => {
+    gameScreen.append(this.div);
+    let { width, height } = this.div.getBoundingClientRect();
+    this.width = width;
+    this.height = height;
+    this.radius = Math.min(this.width / 2, this.height / 2);
+    if (this.player instanceof Enemy) {
+      this.div.classList += " enemy";
+      this.positionY += this.player.height;
     }
-})
+  };
 
+  fire = () => {
+    if (this.player instanceof Player) {
+      this.div.style.left = `${
+        this.positionX + this.player.width / 2 - this.width / 2
+      }px`;
+      this.div.style.bottom = `${this.positionY}px`;
+      // this.div.classList.toggle("projectile-shoot")
+    } else {
+      this.div.style.left = `${
+        this.positionX + this.player.width / 2 - this.width / 2
+      }px`;
+      this.div.style.top = `${this.positionY + this.player.height}px`;
+    }
+  };
+}
 
+// Run game and initiate classes
+let player = new Player();
 
+//FUNCTIONS
+//Functions to randomly generate numbers
+const randomNumberBetween = (min,max) => {
+    return Math.floor(min + Math.random()*(max-min))
+}
+
+// Check for collision
+
+const checkCollision = (projectile, player) => {
+  let projectileRect = projectile.div.getBoundingClientRect();
+  let playerRect = player.div.getBoundingClientRect();
+  let dx;
+  let dy;
+
+  if (player instanceof Player) {
+    [playerPosition, projectilePosition] = [
+      {
+        x: playerRect.x + 0.5 * playerRect.width,
+        y: playerRect.y + 0.5 * playerRect.height,
+      },
+      {
+        x: projectileRect.x + 0.5 * projectileRect.width,
+        y: projectileRect.y + 0.5 * projectileRect.height,
+      },
+    ];
+    dx = Math.abs(projectilePosition.x - playerPosition.x);
+    dy = Math.abs(projectilePosition.y - playerPosition.y);
+  } else if (player instanceof Enemy) {
+    [playerPosition, projectilePosition] = [
+      {
+        x: playerRect.x + 0.5 * playerRect.width,
+        y: playerRect.y + 0.5 * playerRect.height,
+      },
+      {
+        x: projectileRect.x + 0.5 * projectileRect.width,
+        y: projectileRect.y + 0.5 * projectileRect.height,
+      },
+    ];
+    dx = Math.abs(projectilePosition.x - playerPosition.x);
+    dy = Math.abs(projectilePosition.y - playerPosition.y);
+  }
+
+  return Math.hypot(dx, dy) < projectile.radius + player.radius;
+};
+
+// Function to move the bullets
+const moveProjectiles = (projectile, index, array) => {
+  projectile.positionY += projectile.speed;
+  if (projectile.player instanceof Player) {
+    projectile.div.style.bottom = `${projectile.positionY}px`;
+  } else {
+    projectile.div.style.top = `${projectile.positionY}px`;
+  }
+
+  if (projectile.positionY > gameScreenRect.height - projectile.height) {
+    projectile.div.remove();
+    array.splice(index, 1);
+  }
+};
+
+//Fire the weapons periodically
+setInterval(() => {
+  enemies.forEach((enemy) => {
+    enemy.shoot();
+  });
+}, 1000);
+
+//animate the whole game
+const runGame = () => {
+  //Animate Player1
+  player.update();
+  enemies.forEach((enemy) => enemy.update());
+
+  // zMove Projectiles
+  playerProjectiles.forEach(moveProjectiles);
+  enemyProjectiles.forEach(moveProjectiles);
+
+  // Check Collision
+  // Enemy projectiles hit player
+  enemyProjectiles.forEach((projectile) => {
+    if (checkCollision(projectile, player)) {
+      projectile.div.style.backgroundColor = "red";
+    }
+  });
+  // Player projectiles hit Enemy
+  playerProjectiles.forEach((projectile) => {
+    enemies.forEach((enemy) => {
+      if (checkCollision(projectile, enemy)) {
+        projectile.div.style.backgroundColor = "green";
+      }
+    });
+  });                      
+
+  requestAnimationFrame(runGame);
+};
+
+//Run the game animation
+runGame();

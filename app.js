@@ -1,5 +1,9 @@
 // DOM Elements
-const playerSprite = document.querySelector(".player-sprite");
+const playerSprite = document.createElement('div');
+playerSprite.className = "player-sprite";
+const playerSpriteImg = document.createElement("img");
+playerSpriteImg.className = "player-sprite-img"
+
 const gameScreen = document.querySelector(".game-screen");
 const gameScreenRect = gameScreen.getBoundingClientRect();
 let frameRateDelay = 17 * 0;
@@ -8,32 +12,49 @@ projectileDiv.className = "projectile";
 const enemyDiv = document.createElement("div");
 enemyDiv.classList = "enemy-sprite";
 
+let players = []
 let enemies = [];
 let playerProjectiles = [];
 let enemyProjectiles = [];
 
 // OBJECTS AND GLOBAL VARIABLES
-keyCodeMap = {
+let keyCodeMap = {
   ArrowRight: { pressed: false },
   ArrowLeft: { pressed: false },
   Shift: { pressed: false },
   Space: { pressed: false },
+  KeyD: {pressed: false},
+  KeyA: {pressed: false},
 };
-// Enemy Types and characteristics
-enemiesFeatures = [
+// Players and characteristics
+playerFeatures = [
     {
-        health: [10,15],
-        period: [500,700],
-        src: [],
-        width: 20,
-        height: 20,
+        name: "player1",
+        getHealth: () => {return randomNumberBetween(100,100)},
+        src: {left:"./assets/sprites/players/players-player-1-1.png",right:"./assets/sprites/players/players-player-1-25.png",idle:"./assets/sprites/players/players-player-1-13.png"},
+        width: 50,
+        height: 50,
     },
     {
-
+        name: "player2",
+        getHealth: () => {return randomNumberBetween(100,100)},
+        src: {left:"./assets/sprites/players/players-player-2-1.png",right:"./assets/sprites/players/players-player-2-25.png",idle:"./assets/sprites/players/players-player-2-13.png"},
+        width: 50,
+        height: 50,
     }
 ]
 
-// Power ups for Player
+// Enemy Characteristics
+//TODO: Build out enemies
+enemyFeatures = [
+  {
+    name: "enemy-1",
+    getHealth: () => {return randomNumberBetween(100,100)},
+    src: {},
+    width: 50,
+    height: 50,
+  },
+]
 
 
 // Event Listeners
@@ -52,6 +73,16 @@ document.addEventListener("keydown", (event) => {
       keyCodeMap[event.key].pressed = 1;
       break;
     case " ":
+      console.log(event.code, " KEYDOWN");
+      keyCodeMap[event.code].pressed = 1;
+      break;
+    case "a":
+    case "A":
+      console.log(event.code, " KEYDOWN");
+      keyCodeMap[event.code].pressed = 1;
+      break;
+    case "d":
+    case "D":
       console.log(event.code, " KEYDOWN");
       keyCodeMap[event.code].pressed = 1;
       break;
@@ -78,38 +109,55 @@ document.addEventListener("keyup", (event) => {
       console.log(event.code, " KEYUP");
       keyCodeMap[event.code].pressed = 0;
       break;
+    case "a":
+    case "A":
+        console.log(event.code, " KEYUP");
+        keyCodeMap[event.code].pressed = 0;
+        break;
+    case "d":
+    case "D":
+        console.log(event.code, " KEYUP");
+        keyCodeMap[event.code].pressed = 0;
+        break;
     default:
-      console.log(event.key, " KEYDOWN Not configured");
+      console.log(event.key, " KEYUP Not configured");
   }
 });
 
 // Player Class
 class Player {
-  constructor() {
-    this.health = 100;
+  constructor(playerFeatures) {
+    let {name,getHealth, src, width,height} = playerFeatures;
+    this.name = name;
+    this.src = src;
+    this.health = getHealth();
     this.speed = 5; // Number of pixels we move on each press
-    let { width, height } = playerSprite.getBoundingClientRect();
+    this.div = playerSprite.cloneNode();
+    gameScreen.append(this.div)
+    this.div.append(playerSpriteImg.cloneNode())
+    this.div.querySelector('img').src = this.src.idle
+    // let { width, height } = this.div.getBoundingClientRect();
     this.positionX = 0;
     this.positionY = height;
     this.width = width;
     this.height = height;
     this.projectiles = [];
     this.radius = Math.min(this.width / 2, this.height / 2);
-    this.div = playerSprite;
+    players.push(this)
   }
 
   checkBoundaries = () => {
-    let currentPosition = playerSprite.getBoundingClientRect();
+    let currentPosition = this.div.getBoundingClientRect();
     this.positionX = currentPosition.x - gameScreenRect.x;
     this.positionY =
       gameScreenRect.y + gameScreenRect.height - currentPosition.y;
     // Check Left and Right
     if (this.positionX < 0) {
-      playerSprite.style.left = "1px";
+      this.div.style.left = "1px";
       console.log("Left Boundary");
       return false;
     } else if (this.positionX > gameScreenRect.width - this.width) {
-      playerSprite.style.left = `${gameScreenRect.width - this.width - 1}px`;
+      this.div.style.left = `${gameScreenRect.width - this.width - 1}px`;
       console.log("Right Boundary");
       return false;
     }
@@ -121,29 +169,61 @@ class Player {
       return {};
     }
 
-    if (keyCodeMap.ArrowRight.pressed && keyCodeMap.ArrowLeft.pressed) {
-      console.log("RIGHT+LEFT");
-      return {};
-    } else if (keyCodeMap.ArrowRight.pressed) {
-      this.positionX += this.speed;
-      playerSprite.style.left = this.positionX + "px";
-    } else if (keyCodeMap.ArrowLeft.pressed) {
-      this.positionX -= this.speed;
-      playerSprite.style.left = `${this.positionX}px`;
+    if (this.name == "player1") {
+        if (keyCodeMap.ArrowRight.pressed && keyCodeMap.ArrowLeft.pressed) {
+            console.log("RIGHT+LEFT");
+            return {};
+          } else if (keyCodeMap.ArrowRight.pressed) {
+            this.positionX += this.speed;
+            this.div.style.left = this.positionX + "px";
+            this.div.querySelector('img').src = this.src.right
+          } else if (keyCodeMap.ArrowLeft.pressed) {
+            this.positionX -= this.speed;
+            this.div.style.left = `${this.positionX}px`;
+            this.div.querySelector('img').src = this.src.left
+          } else {
+              this.reset()
+          }
+    } else if (this.name == "player2") {
+        if (keyCodeMap.KeyD.pressed && keyCodeMap.KeyA.pressed) {
+            console.log(" RIGHT+LEFT Player2");
+            return {};
+          } else if (keyCodeMap.KeyD.pressed) {
+            this.positionX += this.speed;
+            this.div.style.left = this.positionX + "px";
+            this.div.querySelector('img').src = this.src.right
+          } else if (keyCodeMap.KeyA.pressed) {
+            this.positionX -= this.speed;
+            this.div.style.left = `${this.positionX}px`;
+            this.div.querySelector('img').src = this.src.left
+          } else {
+              this.reset()
+          }
     }
+    
   };
+
+  reset = () => {
+    this.div.querySelector('img').src = this.src.idle
+  }
 
   shoot = () => {
     let projectile = new Projectile(this);
 
-    if (keyCodeMap.Space.pressed) {
+    if (keyCodeMap.Space.pressed && this.name == "player1") {
       projectile.init();
       projectile.fire();
       keyCodeMap.Space.pressed = 0;
       playerProjectiles.push(projectile);
       console.log("FIRE!!");
-    }
+    } else if (keyCodeMap.Shift.pressed && this.name == "player2") {
+        projectile.init();
+        projectile.fire();
+        keyCodeMap.Shift.pressed = 0;
+        playerProjectiles.push(projectile);
+        console.log("FIRE!!");
   };
+}
 
   update = () => {
     //Log all changes in the character
@@ -157,24 +237,30 @@ class Enemy {
   constructor() {
     this.health = 100;
     this.div = enemyDiv.cloneNode();
-    this.width;
-    this.height;
+    // this.width;
+    // this.height;
     this.projectiles = [];
     this.positionX = 0;
     this.positionY = 0;
-    this.radius;
+    // this.radius;
     this.start = new Date(); //start of enemy creation
     this.period = 150;
-  }
-
-  init = () => {
     gameScreen.append(this.div);
     enemies.push(this);
     let { width, height } = this.div.getBoundingClientRect();
     this.width = width;
     this.height = height;
     this.radius = Math.min(this.width / 2, this.height / 2);
-  };
+  }
+
+//   init = () => {
+//     gameScreen.append(this.div);
+//     enemies.push(this);
+//     let { width, height } = this.div.getBoundingClientRect();
+//     this.width = width;
+//     this.height = height;
+//     this.radius = Math.min(this.width / 2, this.height / 2);
+//   };
 
   move = () => {
     let Amp = 0.5 * (gameScreenRect.width - this.width);
@@ -205,7 +291,6 @@ class Enemy {
   update = () => {
     //Log all changes in the character
     this.move();
-    // this.shoot()
   };
 }
 
@@ -220,6 +305,7 @@ class Projectile {
     this.width;
     this.height;
     this.radius;
+    this.power = 5;
   }
 
   init = () => {
@@ -250,14 +336,16 @@ class Projectile {
   };
 }
 
-// Run game and initiate classes
-let player = new Player();
+
 
 //FUNCTIONS
 //Functions to randomly generate numbers
 const randomNumberBetween = (min,max) => {
     return Math.floor(min + Math.random()*(max-min))
 }
+
+// Run game and initiate classes
+let player = new Player(playerFeatures[0]);
 
 // Check for collision
 
@@ -313,7 +401,9 @@ const moveProjectiles = (projectile, index, array) => {
   }
 };
 
-//Fire the weapons periodically
+// Check for 
+
+//Enemies Fire the weapons periodically
 setInterval(() => {
   enemies.forEach((enemy) => {
     enemy.shoot();
@@ -323,7 +413,7 @@ setInterval(() => {
 //animate the whole game
 const runGame = () => {
   //Animate Player1
-  player.update();
+  players.forEach((player) => player.update());
   enemies.forEach((enemy) => enemy.update());
 
   // zMove Projectiles
@@ -331,17 +421,28 @@ const runGame = () => {
   enemyProjectiles.forEach(moveProjectiles);
 
   // Check Collision
+  //TODO: Abstract this to a function that takes args (projectiles,players/enemies)
   // Enemy projectiles hit player
-  enemyProjectiles.forEach((projectile) => {
-    if (checkCollision(projectile, player)) {
-      projectile.div.style.backgroundColor = "red";
+  enemyProjectiles.forEach((projectile,projectileIndex,projectilesArray) => {
+    players.forEach((player) => {
+      if (checkCollision(projectile, player)) {
+        projectile.div.style.backgroundColor = "red";
+        player.health -= projectile.power;
+        console.log("OUCH!",player.name,"Health is",player.health)
+        projectile.div.remove();
+        projectilesArray.splice(projectileIndex,1)
+      }
     }
-  });
+    )});
   // Player projectiles hit Enemy
-  playerProjectiles.forEach((projectile) => {
+  playerProjectiles.forEach((projectile,projectileIndex,projectilesArray) => {
     enemies.forEach((enemy) => {
       if (checkCollision(projectile, enemy)) {
         projectile.div.style.backgroundColor = "green";
+        enemy.health -= projectile.power;
+        console.log("GOT 'EM! ENEMY Health is",enemy.health)
+        projectile.div.remove();
+        projectilesArray.splice(projectileIndex,1)
       }
     });
   });                      
@@ -351,3 +452,7 @@ const runGame = () => {
 
 //Run the game animation
 runGame();
+
+//TODO: Build add animations and images for each enemy
+// Create animation for destruction and explosion
+// Create basic game flow
