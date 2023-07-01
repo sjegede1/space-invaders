@@ -87,7 +87,7 @@ document.addEventListener("keyup", (event) => {
 class Player {
   constructor() {
     this.health = 100;
-    this.speed = 5; // Number of pixels we move on each press
+    this.speed = 15; // Number of pixels we move on each press
     let { width, height } = playerSprite.getBoundingClientRect();
     this.positionX = 0;
     this.positionY = height;
@@ -214,14 +214,14 @@ class Enemy {
 class Projectile {
   constructor(Player) {
     this.player = Player;
-    this.speed = 1;
+    this.speed = 100;
     this.div = projectileDiv.cloneNode();
     this.positionX = this.player.positionX;
     this.positionY = this.player.positionY;
     this.width;
     this.height;
     this.radius;
-  }
+  } 
 
   init = () => {
     gameScreen.append(this.div);

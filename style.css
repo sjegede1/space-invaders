@@ -4,7 +4,7 @@ body {
     /* justify-content: center; */
     align-items: center;
     margin: 0px;
-    color: white;
+    color: red;
     text-align: center;
 }
 
@@ -18,6 +18,9 @@ body {
     /* justify-content: space-between; */
     position: relative;
     margin: 10px;
+    background-image: url("https://images.unsplash.com/photo-1608754482805-6f630357358b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80");
+    background-size: cover;
+    background-position: center;
 }
 
 .enemy {
@@ -26,64 +29,55 @@ body {
 
 .player-sprite, .enemy-sprite {
     /* border: solid blue; */
-    background-color: blue;
-    width: 50px;
-    height: 50px;
+    /* background-color: blue; */
+    /* width: 50px; */
+    /* height: 50px; */
     position: absolute;
 }
 
 .player-sprite {
     bottom: 0px;
-    
 }
 
 .enemy-sprite {
     top: 0px;
-    background-color: red;
+    /* background-color: red; */
 }
 
-.player-sprite-img {
+.enemy-sprite p {
+    position: absolute;
+    top: 0px;
+    color: red;
+}
+
+.player-sprite-img, .enemy-sprite-img {
     height: 100%;
+    width: 100%;
 }
 
 .projectile {
     /* border: solid green; */
-    background-color: yellow;
-    width: 20px;
+    /* background-color: yellow; */
+    width: 5px;
     height: 20px; 
     position: absolute;
 }
 
-.projectile-shoot {
-    animation: projectile-shoot 1s linear 50ms 1 forwards;
+.projectile img {
+    width: 100%;
+    height: 100%;
 }
 
-@keyframes projectile-shoot {
-    0% {
-        transform: translateY(0px);
-    }
-    99% {
-        transform: translateY(-500px);
-        opacity: 100%;
-    }
-    100% {
-        transform: translateY(-500px);
-        opacity: 0%;
-    }
+.health-bars {
+    display: flex;
+    text-align: center;
+}
+.health {
+    margin: 15px;
 }
 
-.player-1-move-left {
-    animation: player-1-move-left 1s linear forwards;
-}
-@keyframes player-1-move-left {
-    0% {
-        content: url("./assets/sprites/players/players-player-.png");
-    }
-    50% {
-        content: url("./assets/sprites/players/players-player-1-6.png");
-    }
-    100% {
-        content: url("./assets/sprites/players/players-player-1-1.png");
-    }
+.unclickable {
+    opacity: 25%;
+    pointer-events: none;
 }
 

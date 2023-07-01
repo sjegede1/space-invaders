@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>Sandbox</title>
+    <link rel="shortcut icon" href="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4472e3d2-994d-4fe8-86cc-7258d948a663/dfniejm-61165b22-83a0-4dd8-975d-b4450b6cfba4.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzQ0NzJlM2QyLTk5NGQtNGZlOC04NmNjLTcyNThkOTQ4YTY2M1wvZGZuaWVqbS02MTE2NWIyMi04M2EwLTRkZDgtOTc1ZC1iNDQ1MGI2Y2ZiYTQuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.4RMeIWgZ7eg7_7Fu1yQdMNvTSbD4QABh38dd1rory_Q" type="image/x-icon">
   </head>
   <body>
     <div class="game-screen">
@@ -15,8 +16,33 @@
       </div> -->
     </div>
 
-    <button onclick="new Enemy()">SPAWN ENEMY</button>
-    <button onclick="const player2 = new Player(playerFeatures[1])">Player 2</button>
+    <div class="health-bars">
+      <h3 class="health">Player 1 Health: <span class="player-health" style="color:green;font-weight:bolder">100</span></h3>
+      <h3 class="health">Player 2 Health: <span class="player-health" style="color:green;font-weight:bolder">100</span></h3>
+      <h3 class="points">Player Points: <span class="player-points" style="color:red;font-weight:bolder">0</span></h3>
+    </div>
+
+    <div class="game-menu">
+      <div class="player-one">
+        <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4472e3d2-994d-4fe8-86cc-7258d948a663/dfniejm-61165b22-83a0-4dd8-975d-b4450b6cfba4.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzQ0NzJlM2QyLTk5NGQtNGZlOC04NmNjLTcyNThkOTQ4YTY2M1wvZGZuaWVqbS02MTE2NWIyMi04M2EwLTRkZDgtOTc1ZC1iNDQ1MGI2Y2ZiYTQuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.4RMeIWgZ7eg7_7Fu1yQdMNvTSbD4QABh38dd1rory_Q" alt="" class="player-img">
+        <h3>Player One</h3>
+      </div>
+      <div class="player-two">
+        <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4472e3d2-994d-4fe8-86cc-7258d948a663/dfniek2-aa32dd02-ac9f-452d-8462-720f7af6e980.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzQ0NzJlM2QyLTk5NGQtNGZlOC04NmNjLTcyNThkOTQ4YTY2M1wvZGZuaWVrMi1hYTMyZGQwMi1hYzlmLTQ1MmQtODQ2Mi03MjBmN2FmNmU5ODAuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.49ZiWwhUSXUVo9ft9kJmKjTWfCduu6GRKpwdRtCuabo" alt="" class="player-img">
+        <h3>Player Two</h3>
+      </div>
+
+      <button id="two-player" onclick="twoPlayer()">1 Player Mode</button>
+
+      <button id="start-game" onclick="startGame()">START GAME</button>
+    </div>
+
+    <br>
+    <div class="debug-buttons">
+      <button onclick="new Enemy(enemyFeatures[Object.keys(enemyFeatures)[randomNumberBetween(0,2)]])">SPAWN ENEMY</button>
+      <button onclick="const player2 = new Player(playerFeatures['player-2'])">Player 2</button>
+    </div>
+
 
     <script src="app.js"></script>
   </body>
