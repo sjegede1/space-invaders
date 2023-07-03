@@ -30,7 +30,9 @@ let round = 1;
 let roundWin = 0;
 let gameOver = 0;
 let twoPlayerMode = 1;
-let bossLevel = 3;
+let bossLevel = 2;
+let roundPoints = 200;
+let isGameOver = 0;
 
 // OBJECTS AND GLOBAL VARIABLES
 let keyCodeMap = {
@@ -127,6 +129,26 @@ enemyFeatures = {
     periodY: 200,
     power: 2,
     projectileSpeed: 20,
+    probability: 0.8,
+  },
+};
+// BOSS FEATURES
+const bossFeatures = {
+  "boss-1": {
+    name: "boss-1",
+    getHealth: () => {
+      return randomNumberBetween(500, 750);
+    },
+    src: {
+      idle: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/878e1148-dffb-4a5b-bd88-b1bee5a028ca/dc8o5sa-46ac6735-7cbb-4095-a179-b1583f447194.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzg3OGUxMTQ4LWRmZmItNGE1Yi1iZDg4LWIxYmVlNWEwMjhjYVwvZGM4bzVzYS00NmFjNjczNS03Y2JiLTQwOTUtYTE3OS1iMTU4M2Y0NDcxOTQuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Wl2uh_7p8MEfEx_3WvOb9UgfKUk9STmVcNmCNkUqoZ8",
+      laser: "/assets/sprites/players/players-blast-small-1.png",
+    },
+    width: 200,
+    height: 200,
+    periodX: 1500,
+    periodY: 2000,
+    power: 25,
+    projectileSpeed: 15,
     probability: 0.8,
   },
 };
@@ -436,6 +458,10 @@ class Projectile {
   };
 }
 
+class Boss extends Enemy {
+
+}
+
 //FUNCTIONS
 //Functions to randomly generate numbers
 const randomNumberBetween = (min, max) => {
@@ -525,9 +551,11 @@ const explode = (player) => {
 
 // Collate points
 const addPoints = (player) => {
-  if (player instanceof Enemy) {
+  if (player instanceof Boss) {
+    playerPoints += bossFeatures[player.name].getHealth();
+  } else if (player instanceof Enemy) {
     playerPoints += enemyFeatures[player.name].getHealth();
-  }
+  } 
 };
 
 // Player/Enemy death
@@ -561,46 +589,44 @@ const startGame = () => {
   document.querySelector("#two-player").disabled = 1;
 
   if (round == 1) {
-    startGameButton.disabled = 1;
-    startGameButton.innerHTML = "Next Round"
+    startGameButton.innerHTML = "Next Round";
   }
+  startGameButton.disabled = 1;
 
   // Generate new enemies every few seconds
   let generateEnemies = setInterval(() => {
     if (round % bossLevel) {
-      regularGame();
+      regularRound();
     } else {
-      bossLevel();
+      bossRound();
     }
 
-    if (playerPoints >= 50) {
-      clearInterval(generateEnemies)
+    if (playerPoints >= roundPoints) {
+      clearInterval(generateEnemies);
       //TODO: Create some function to advance to  next round
-      nextRound()
+      nextRound();
     }
-
-  }, 3000/(1 + round/10));
-
-  
+  }, 3000 / (1 + round / 10));
 };
 
 //TODO: Finsihe this function
 const nextRound = () => {
   round += 1;
-  enemies.forEach(explode)
-  players.forEach(explode)
+  enemies.forEach(explode);
+  players.forEach(explode);
 
-  enemies = []; players = [];
-  console.log("NEXT ROUND!")
+  enemies = [];
+  players = [];
+  console.log("NEXT ROUND!");
 
   playerPoints = 0;
   startGameButton.disabled = 0;
 
   // Instead of alert use something else.
-  alert(`Move to Round ${round}`)
-}
+  alert(`Move to Round ${round}`);
+};
 
-const regularGame = () => {
+const regularRound = () => {
   for (enemyType in enemyFeatures) {
     if (
       Math.random() <= enemyFeatures[enemyType].probability &&
@@ -612,8 +638,11 @@ const regularGame = () => {
 };
 
 const bossRound = () => {
-  console.log("Boss Level!!");
   // TODO: Make Bosses
+  if (enemies.length <= (2 * bossLevel) / round) {
+    let bossNum = randomNumberBetween(1,1);
+    new Boss(bossFeatures[`boss-${bossNum}`]);
+  }
 };
 
 //Enemies Fire the weapons periodically
@@ -658,7 +687,7 @@ const runGame = () => {
   playerDeath(enemies);
   playerDeath(players);
 
-  gameAnim =  requestAnimationFrame(runGame);
+  gameAnim = requestAnimationFrame(runGame);
 };
 
 //Run the game animation
