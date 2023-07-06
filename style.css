@@ -3,6 +3,8 @@
 
 body {
   /* overflow: hidden; */
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
@@ -12,6 +14,7 @@ body {
   text-align: center;
   background-color: black;
   justify-content: center;
+  font-family: "ArcadeClassic", sans-serif;
 }
 
 .game-screen {
@@ -105,6 +108,15 @@ body {
   background-color: red;
 }
 
+.menu-button {
+  height: 30px;
+  font-family: inherit;
+  color: yellow;
+  font-weight: 300;
+  background-color: transparent;
+  font-size: 1.2em;
+}
+
 .health {
   margin: 15px;
 }
@@ -114,57 +126,71 @@ body {
   pointer-events: none;
 }
 
+.game-menu button {
+  font-family: "ArcadeClassic", sans-serif;
+  font-size: x-large;
+}
+
 .game-menu {
-  background-color: yellowgreen;
+  background-color: transparent;
   border-radius: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  /* margin-top: -10%; */
-  position: absolute;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: 100px;
+  position: relative;
   z-index: 1;
-  top:auto;
-  left: auto;
-  /* top: 20% */
+  top: 30%;
+  left: 0;
+  right: 0;
+  margin-inline:auto;
+  font-size: larger;
+  width: 300px;
 }
 
-.controller-buttons, .d-pad, .action-buttons {
-  content-visibility:hidden;
-  /* display: none; */
+.controller-buttons,
+.d-pad,
+.action-buttons {
+  content-visibility: hidden;
+  font-family: inherit;
 }
-
 
 .hidden {
-  content-visibility:hidden;
+  content-visibility: hidden;
 }
-
 
 @media (max-width: 600px) {
-
   .controller-container {
-    margin: 10px 0px;
-    border: solid red;
+    margin: 20px 0px;
     display: flex;
-    width: 90%;
-    /* min-width: 200px; */
+    width: 100%;
     justify-content: space-between;
-    content-visibility:visible;
+    content-visibility: visible;
   }
-  
-.d-pad, .action-buttons {
-  display: flex;
-  height: 100px;
-  width: 50%;
-  border: solid blue;
-  position: relative;
-  justify-content: space-around;
-  align-items: center;
-  margin-inline: 5px;
-  content-visibility:visible;
-}
 
-.controller-buttons {
-  text-align: center;
-  content-visibility:visible;
-}
+  .d-pad,
+  .action-buttons {
+    display: flex;
+    height: 100px;
+    width: 50%;
+    /* border: solid blue; */
+    position: relative;
+    /* justify-content: space-around; */
+    align-items: center;
+    margin-inline: 5px;
+    content-visibility: visible;
+  }
 
+  .action-buttons {
+    justify-content: right;
+  }
+
+  .front {
+    font-size: 5em;
+  }
+
+  .controller-buttons {
+    text-align: center;
+    content-visibility: visible;
+    margin: 0px 10px
+  }
 }

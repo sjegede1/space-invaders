@@ -674,13 +674,8 @@ const runGame = () => {
   //Create Health bar for Players TODO: Make it an actual health bar
   players.forEach((player, playerIndex) => {
     let healthDivs = document.querySelectorAll(".current-health-bar");
-    healthDivs[playerIndex].style.width = `${player.health}%`;
+    healthDivs[player.name.at(-1)-1].style.width = `${player.health}%`;
   });
-
-  // Enemy health update
-  // enemies.forEach((enemy) => {
-  //   enemy.div.querySelector("h3").innerText = enemy.health;
-  // });
 
   //Total Points
   playerPointsDiv.innerHTML = playerPoints;
@@ -690,6 +685,9 @@ const runGame = () => {
   playerDeath(players);
 
   gameAnim = requestAnimationFrame(runGame);
+
+  //Game Over Condition
+
 };
 
 //Run the game animation

@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Sandbox</title>
+    <title></title>
     <link
       rel="shortcut icon"
       href="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4472e3d2-994d-4fe8-86cc-7258d948a663/dfniejm-61165b22-83a0-4dd8-975d-b4450b6cfba4.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzQ0NzJlM2QyLTk5NGQtNGZlOC04NmNjLTcyNThkOTQ4YTY2M1wvZGZuaWVqbS02MTE2NWIyMi04M2EwLTRkZDgtOTc1ZC1iNDQ1MGI2Y2ZiYTQuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.4RMeIWgZ7eg7_7Fu1yQdMNvTSbD4QABh38dd1rory_Q"
       type="image/x-icon"
     />
   </head>
+
   <body>
     <div class="health-bars">
       <div class="player-health" id="player-1-health-container">
@@ -48,7 +49,7 @@
             alt=""
             class="player-img-menu"
           />
-          <h3>Player One</h3>
+          <h3 style="color:blue">Player 1</h3>
         </div>
         <div class="player-two">
           <img
@@ -56,22 +57,24 @@
             alt=""
             class="player-img-menu"
           />
-          <h3>Player Two</h3>
+          <h3>Player 2</h3>
         </div>
   
         <button id="two-player" onclick="twoPlayer()">2 Player Mode</button>
   
         <button id="start-game" onclick="startGame()">START GAME</button>
+
+        <button id="quit-game" onclick="location.reload()">QUIT GAME</button>
       </div>
     </div>
 
     <div class="controller-container">
       <div class="d-pad">
         <button id="left-button" class="pushable controller-buttons">
-          <span class="front"> LEFT </span>
+          <span class="front">&#8678;</span>
         </button>
         <button id="right-button" class="pushable controller-buttons">
-          <span class="front"> RIGHT </span>
+          <span class="front">&#8680;</span>
         </button>
       </div>
 
@@ -84,7 +87,6 @@
         </button>
       </div>
     </div>
-
     <script src="app.js"></script>
   </body>
 </html>
