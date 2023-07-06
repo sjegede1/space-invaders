@@ -86,8 +86,8 @@ enemyFeatures = {
       return randomNumberBetween(30, 35);
     },
     src: {
-      idle: "/assets/sprites/enemy-1/enemy-1-moving-1.png",
-      laser: "/assets/sprites/players/players-blast-small-1.png",
+      idle: "./assets/sprites/enemy-1/enemy-1-moving-1.png",
+      laser: "./assets/sprites/players/players-blast-small-1.png",
     },
     width: 50,
     height: 50,
@@ -103,8 +103,8 @@ enemyFeatures = {
       return randomNumberBetween(55, 60);
     },
     src: {
-      idle: "/assets/sprites/enemy-2/enemy-2-moving-1.png",
-      laser: "/assets/sprites/players/players-blast-small-1.png",
+      idle: "./assets/sprites/enemy-2/enemy-2-moving-1.png",
+      laser: "./assets/sprites/players/players-blast-small-1.png",
     },
     width: 80,
     height: 80,
@@ -120,8 +120,8 @@ enemyFeatures = {
       return randomNumberBetween(10, 15);
     },
     src: {
-      idle: "/assets/sprites/enemy-3/enemy-3-moving-1.png",
-      laser: "/assets/sprites/players/players-blast-small-1.png",
+      idle: "./assets/sprites/enemy-3/enemy-3-moving-1.png",
+      laser: "./assets/sprites/players/players-blast-small-1.png",
     },
     width: 40,
     height: 40,
@@ -141,7 +141,7 @@ const bossFeatures = {
     },
     src: {
       idle: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/878e1148-dffb-4a5b-bd88-b1bee5a028ca/dc8o5sa-46ac6735-7cbb-4095-a179-b1583f447194.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzg3OGUxMTQ4LWRmZmItNGE1Yi1iZDg4LWIxYmVlNWEwMjhjYVwvZGM4bzVzYS00NmFjNjczNS03Y2JiLTQwOTUtYTE3OS1iMTU4M2Y0NDcxOTQuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Wl2uh_7p8MEfEx_3WvOb9UgfKUk9STmVcNmCNkUqoZ8",
-      laser: "/assets/sprites/players/players-blast-small-1.png",
+      laser: "./assets/sprites/players/players-blast-small-1.png",
     },
     width: 200,
     height: 200,
@@ -380,12 +380,13 @@ class Enemy {
   }
 
   move = () => {
-    let Amp = 0.5 * (gameScreenRect.width - this.width);
+    let AmpX = 0.5 * (gameScreenRect.width - this.width);
+    let AmpY = 0.5 * (gameScreenRect.height - this.height);
     let freqX = 1 / this.periodX;
     let freqY = 1 / this.periodY;
     let currentTime = new Date() - this.start;
-    this.positionX = -Amp * Math.cos(freqX * currentTime) + Amp;
-    this.positionY = -Amp * 0.2 * Math.sin(freqY * currentTime) + Amp * 0.2;
+    this.positionX = -AmpX * Math.cos(freqX * currentTime) + AmpX;
+    this.positionY = -AmpY * 0.2 * Math.sin(freqY * currentTime) + AmpY * 0.2;
 
     this.div.style.left = `${this.positionX}px`;
     this.div.style.top = `${this.positionY}px`;
@@ -458,9 +459,7 @@ class Projectile {
   };
 }
 
-class Boss extends Enemy {
-
-}
+class Boss extends Enemy {}
 
 //FUNCTIONS
 //Functions to randomly generate numbers
@@ -555,7 +554,7 @@ const addPoints = (player) => {
     playerPoints += bossFeatures[player.name].getHealth();
   } else if (player instanceof Enemy) {
     playerPoints += enemyFeatures[player.name].getHealth();
-  } 
+  }
 };
 
 // Player/Enemy death
@@ -574,6 +573,9 @@ const playerDeath = (players) => {
 
 const twoPlayer = () => {
   document.querySelector(".player-two").classList.toggle("unclickable");
+  document
+    .querySelector("#player-2-health-container")
+    .classList.toggle("unclickable");
   if (twoPlayerMode) {
     twoPlayerMode = 0;
     console.log("1 player mode");
@@ -640,7 +642,7 @@ const regularRound = () => {
 const bossRound = () => {
   // TODO: Make Bosses
   if (enemies.length <= (2 * bossLevel) / round) {
-    let bossNum = randomNumberBetween(1,1);
+    let bossNum = randomNumberBetween(1, 1);
     new Boss(bossFeatures[`boss-${bossNum}`]);
   }
 };
@@ -669,10 +671,10 @@ const runGame = () => {
   // Player projectiles hit enemy
   projectileCollision(playerProjectiles, enemies);
 
-  //Create Health bar for Players
+  //Create Health bar for Players TODO: Make it an actual health bar
   players.forEach((player, playerIndex) => {
-    let healthDivs = document.querySelectorAll(".player-health");
-    healthDivs[playerIndex].innerHTML = player.health;
+    let healthDivs = document.querySelectorAll(".current-health-bar");
+    healthDivs[playerIndex].style.width = `${player.health}%`;
   });
 
   // Enemy health update
@@ -695,3 +697,112 @@ runGame();
 
 // TODO:
 // Create basic game flow
+
+let leftButton = document.querySelector("#left-button");
+let rightButton = document.querySelector("#right-button");
+let aButton = document.querySelector("#a-button");
+let bButton = document.querySelector("#b-button");
+
+leftButton.addEventListener('touchstart', (event) => {
+  console.log(event)
+  keyCodeMap.ArrowLeft.pressed = 1;
+})
+leftButton.addEventListener('touchend', () => {
+  keyCodeMap.ArrowLeft.pressed = 0;
+})
+
+rightButton.addEventListener('touchstart', (event) => {
+  console.log(event)
+  keyCodeMap.ArrowRight.pressed = 1;
+})
+rightButton.addEventListener('touchend', () => {
+  keyCodeMap.ArrowRight.pressed = 0;
+})
+
+aButton.addEventListener('touchstart', (event) => {
+  console.log(event)
+  // keyCodeMap.ArrowRight.pressed = 1;
+})
+aButton.addEventListener('touchend', () => {
+  // keyCodeMap.ArrowRight.pressed = 0;
+})
+
+bButton.addEventListener('touchstart', (event) => {
+  console.log(event)
+  keyCodeMap.Space.pressed = 1;
+})
+bButton.addEventListener('touchend', () => {
+  keyCodeMap.Space.pressed = 0;
+})
+
+let isGamePaused = 1;
+const gameMenu = document.querySelector(".game-menu")
+const menuButtonPress = () => {
+  gameMenu.classList.toggle('hidden')
+}
+
+// document.addEventListener("keydown", (event) => {
+//   switch (event.key) {
+//     case "ArrowRight":
+//       console.log(event.key, " KEYDOWN");
+//       keyCodeMap[event.key].pressed = 1;
+//       break;
+//     case "ArrowLeft":
+//       console.log(event.key, " KEYDOWN");
+//       keyCodeMap[event.key].pressed = 1;
+//       break;
+//     case "Shift":
+//       console.log(event.key, " KEYDOWN");
+//       keyCodeMap[event.key].pressed = 1;
+//       break;
+//     case " ":
+//       console.log(event.code, " KEYDOWN");
+//       keyCodeMap[event.code].pressed = 1;
+//       break;
+//     case "a":
+//     case "A":
+//       console.log(event.code, " KEYDOWN");
+//       keyCodeMap[event.code].pressed = 1;
+//       break;
+//     case "d":
+//     case "D":
+//       console.log(event.code, " KEYDOWN");
+//       keyCodeMap[event.code].pressed = 1;
+//       break;
+//     default:
+//       console.log(event.key, " KEYDOWN Not configured");
+//   }
+// });
+
+// document.addEventListener("keyup", (event) => {
+//   switch (event.key) {
+//     case "ArrowRight":
+//       console.log(event.key, " KEYUP");
+//       keyCodeMap[event.key].pressed = 0;
+//       break;
+//     case "ArrowLeft":
+//       console.log(event.key, " KEYUP");
+//       keyCodeMap[event.key].pressed = 0;
+//       break;
+//     case "Shift":
+//       console.log(event.key, " KEYUP");
+//       keyCodeMap[event.key].pressed = 0;
+//       break;
+//     case " ":
+//       console.log(event.code, " KEYUP");
+//       keyCodeMap[event.code].pressed = 0;
+//       break;
+//     case "a":
+//     case "A":
+//       console.log(event.code, " KEYUP");
+//       keyCodeMap[event.code].pressed = 0;
+//       break;
+//     case "d":
+//     case "D":
+//       console.log(event.code, " KEYUP");
+//       keyCodeMap[event.code].pressed = 0;
+//       break;
+//     default:
+//       console.log(event.key, " KEYUP Not configured");
+//   }
+// });
