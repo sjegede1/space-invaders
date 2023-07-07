@@ -578,6 +578,7 @@ const twoPlayer = () => {
   document
     .querySelector("#player-2-health-container")
     .classList.toggle("unclickable");
+    document.querySelector("#player-2-how-to-play").classList.toggle("unclickable")
   if (twoPlayerMode) {
     twoPlayerMode = 0;
     console.log("1 player mode");

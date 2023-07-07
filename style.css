@@ -163,7 +163,8 @@ body {
 }
 
 .hidden {
-  content-visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
 }
 
 .press-me {
@@ -235,4 +236,9 @@ footer > * {
     content-visibility: visible;
     margin: 0px 10px;
   }
+
+  .two-player { 
+    opacity: 25%;
+    pointer-events: none;
+   }
 }
