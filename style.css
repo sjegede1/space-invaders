@@ -132,7 +132,7 @@ body {
   font-size: x-large;
 }
 
-.game-menu{
+.game-menu {
   background-color: transparent;
   border-radius: 10px;
   display: grid;
@@ -143,13 +143,11 @@ body {
   top: 15%;
   left: 0;
   right: 0;
-  margin-inline:auto;
+  margin-inline: auto;
   font-size: larger;
   width: 300px;
-  text-shadow: -1px 1px 0 white,
-  1px 2px 0 white,
-  1px -1px 0 white,
-  -1px -1px 0 white;
+  text-shadow: -1px 1px 0 white, 1px 2px 0 white, 1px -1px 0 white,
+    -1px -1px 0 white;
 }
 
 .controller-buttons,
@@ -159,7 +157,8 @@ body {
   font-family: inherit;
 }
 
-#a-button, #a-button .front {
+#a-button,
+#a-button .front {
   opacity: 30%;
 }
 
@@ -173,6 +172,24 @@ body {
   background-color: yellow;
 }
 
+footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer img {
+  height: 30px;
+}
+
+footer > * {
+  margin-inline: 10px;
+}
+
 @keyframes press-me {
   from {
     background-color: yellow;
@@ -181,7 +198,6 @@ body {
     background-color: green;
     font-size: 120%;
   }
-  
 }
 
 @media (max-width: 600px) {
@@ -217,6 +233,6 @@ body {
   .controller-buttons {
     text-align: center;
     content-visibility: visible;
-    margin: 0px 10px
+    margin: 0px 10px;
   }
 }
