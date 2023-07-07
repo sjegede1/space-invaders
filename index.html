@@ -50,7 +50,7 @@
             alt=""
             class="player-img-menu"
           />
-          <h3 style="color:blue">Player 1</h3>
+          <h3 style="color:blue;margin:0px">Player 1</h3>
         </div>
         <div class="player-two">
           <img
@@ -58,12 +58,30 @@
             alt=""
             class="player-img-menu"
           />
-          <h3>Player 2</h3>
+          <h3 style="margin:0px">Player 2</h3>
         </div>
   
         <button id="two-player" onclick="twoPlayer()">2 Player Mode</button>
+
+        <div class="how-to-play" style="color:blue;font-size:0.8em;">
+          <span style="display:flex;align-items:center"><img style="height:30px;border-radius:5px;background-color:blue" src="https://www.iconexperience.com/_img/v_collection_png/128x128/shadow/keyboard_key_left.png" alt=""> Move Left</span>
+      
+          <span style="display:flex;align-items:center"><img style="height:30px;border-radius:5px;background-color:blue" src="https://www.iconexperience.com/_img/v_collection_png/128x128/shadow/keyboard_key_right.png" alt=""> Move Right</span>
+
+          <span style="display:flex;align-items:center"><img style="height:30px;border-radius:5px;margin-right:12px;" src="./assets/icons/keyboard_key_wide.png" alt="">Shoot</span>
+
+        </div>
+
+        <div class="how-to-play" style="color:red;font-size:0.9em">
+          <span style="display:flex;align-items:center"><img style="height:30px;border-radius:5px;background-color:blue" src="https://www.iconexperience.com/_img/v_collection_png/256x256/shadow/keyboard_key_a.png" alt=""> Move Left</span>
+      
+          <span style="display:flex;align-items:center"><img style="height:30px;border-radius:5px;background-color:blue" src="https://www.iconexperience.com/_img/v_collection_png/256x256/shadow/keyboard_key_d.png" alt=""> Move Right</span>
+
+          <span style="display:flex;align-items:center"><img style="height:30px;border-radius:5px;margin-right:12px;" src="https://www.iconexperience.com/_img/g_collection_png/standard/128x128/keyboard_key_shift.png" alt="">Shoot</span>
+
+        </div>
   
-        <button id="start-game" onclick="startGame()">START GAME</button>
+        <button id="start-game" class="press-me" onclick="startGame()" style="background-color:green">START GAME</button>
 
         <button id="quit-game" onclick="location.reload()">QUIT GAME</button>
 
@@ -82,11 +100,11 @@
       </div>
 
       <div class="action-buttons">
-        <button id="a-button" class="pushable controller-buttons">
+        <button id="a-button" class="pushable controller-buttons" >
           <span class="front">A</span>
         </button>
         <button id="b-button" class="pushable controller-buttons">
-          <span class="front"> B </span>
+          <span class="front" disabled> B </span>
         </button>
       </div>
     </div>

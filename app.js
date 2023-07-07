@@ -139,7 +139,7 @@ const bossFeatures = {
   "boss-1": {
     name: "boss-1",
     getHealth: () => {
-      return randomNumberBetween(500, 750);
+      return randomNumberBetween(200, 300);
     },
     src: {
       idle: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/878e1148-dffb-4a5b-bd88-b1bee5a028ca/dc8o5sa-46ac6735-7cbb-4095-a179-b1583f447194.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzg3OGUxMTQ4LWRmZmItNGE1Yi1iZDg4LWIxYmVlNWEwMjhjYVwvZGM4bzVzYS00NmFjNjczNS03Y2JiLTQwOTUtYTE3OS1iMTU4M2Y0NDcxOTQuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Wl2uh_7p8MEfEx_3WvOb9UgfKUk9STmVcNmCNkUqoZ8",
@@ -149,7 +149,7 @@ const bossFeatures = {
     height: 200,
     periodX: 1500,
     periodY: 2000,
-    power: 25,
+    power: 10,
     projectileSpeed: 15,
     probability: 0.8,
   },
@@ -586,11 +586,13 @@ const twoPlayer = () => {
     console.log("2 player mode");
   }
 };
+twoPlayer()
 
 const startGame = () => {
   new Player(playerFeatures["player-1"]);
   twoPlayerMode ? new Player(playerFeatures["player-2"]) : {};
   document.querySelector("#two-player").disabled = 1;
+  menuButtonPress()
 
   if (round == 1) {
     startGameButton.innerHTML = "Next Round";

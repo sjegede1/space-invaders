@@ -21,7 +21,7 @@ body {
   /* border: solid black; */
   background-color: grey;
   width: 100vw;
-  height: 50vh;
+  height: 60vh;
   display: flex;
   flex-direction: column;
   /* justify-content: space-between; */
@@ -132,20 +132,24 @@ body {
   font-size: x-large;
 }
 
-.game-menu {
+.game-menu{
   background-color: transparent;
   border-radius: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-auto-rows: 100px;
-  position: relative;
+  position: absolute;
   z-index: 1;
-  top: 30%;
+  top: 15%;
   left: 0;
   right: 0;
   margin-inline:auto;
   font-size: larger;
   width: 300px;
+  text-shadow: -1px 1px 0 white,
+  1px 2px 0 white,
+  1px -1px 0 white,
+  -1px -1px 0 white;
 }
 
 .controller-buttons,
@@ -155,11 +159,16 @@ body {
   font-family: inherit;
 }
 
+#a-button, #a-button .front {
+  opacity: 30%;
+}
+
 .hidden {
   content-visibility: hidden;
 }
 
 .press-me {
+  opacity: 200%;
   animation: press-me 1s linear infinite;
   background-color: yellow;
 }
@@ -169,8 +178,8 @@ body {
     background-color: yellow;
   }
   to {
-    background-color: red;
-    font-size: larger;
+    background-color: green;
+    font-size: 120%;
   }
   
 }
