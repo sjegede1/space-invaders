@@ -241,4 +241,8 @@ footer > * {
     opacity: 25%;
     pointer-events: none;
    }
+
+  footer {
+    position: relative;
+  }
 }
