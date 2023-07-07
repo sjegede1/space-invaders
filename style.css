@@ -237,7 +237,7 @@ footer > * {
     margin: 0px 10px;
   }
 
-  .two-player { 
+  #two-player {
     opacity: 25%;
     pointer-events: none;
    }
