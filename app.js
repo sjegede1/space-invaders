@@ -32,7 +32,7 @@ let round = 1;
 let roundWin = 0;
 let gameOver = 0;
 let twoPlayerMode = 1;
-let bossLevel = 1;
+let bossLevel = 5;
 let roundPoints = 300;
 let isGameOver = 0;
 
