@@ -98,14 +98,15 @@ body {
 }
 
 .player-img {
-  height: 25px;
+  height: 20px;
   margin-right: 10px;
 }
 
 .health-bar {
-  width: 100px;
-  height: 20px;
+  width: 70px;
+  height: 15px;
   background-color: red;
+  margin-right: 5px;
 }
 
 .menu-button {
@@ -156,6 +157,22 @@ body {
 
 .hidden {
   content-visibility: hidden;
+}
+
+.press-me {
+  animation: press-me 1s linear infinite;
+  background-color: yellow;
+}
+
+@keyframes press-me {
+  from {
+    background-color: yellow;
+  }
+  to {
+    background-color: red;
+    font-size: larger;
+  }
+  
 }
 
 @media (max-width: 600px) {

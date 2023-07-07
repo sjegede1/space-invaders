@@ -18,6 +18,8 @@ let frameRateDelay = 17 * 0;
 const projectileDiv = document.createElement("div");
 projectileDiv.className = "projectile";
 
+const roundNumber = document.querySelector("#round")
+
 //Buttons
 const startGameButton = document.querySelector("#start-game");
 
@@ -30,8 +32,8 @@ let round = 1;
 let roundWin = 0;
 let gameOver = 0;
 let twoPlayerMode = 1;
-let bossLevel = 2;
-let roundPoints = 200;
+let bossLevel = 1;
+let roundPoints = 300;
 let isGameOver = 0;
 
 // OBJECTS AND GLOBAL VARIABLES
@@ -595,6 +597,15 @@ const startGame = () => {
   }
   startGameButton.disabled = 1;
 
+  //check if we're alive
+  let checkAlive = setInterval(() => {
+    if (players.length == 0) {
+      alert("GAME OVER! YOU LOST\n Press Okay to restart")
+      location.reload()
+      clearInterval(checkAlive)
+    }
+  },17)
+
   // Generate new enemies every few seconds
   let generateEnemies = setInterval(() => {
     if (round % bossLevel) {
@@ -605,6 +616,7 @@ const startGame = () => {
 
     if (playerPoints >= roundPoints) {
       clearInterval(generateEnemies);
+      clearInterval(checkAlive)
       //TODO: Create some function to advance to  next round
       nextRound();
     }
@@ -625,7 +637,11 @@ const nextRound = () => {
   startGameButton.disabled = 0;
 
   // Instead of alert use something else.
-  alert(`Move to Round ${round}`);
+  document.querySelector('.game-menu').classList = "game-menu"
+  startGameButton.classList = "press-me"
+  // alert(`Move to Round ${round}`);
+
+  // startGameButton.classList.toggle("press-me")
 };
 
 const regularRound = () => {
@@ -641,7 +657,7 @@ const regularRound = () => {
 
 const bossRound = () => {
   // TODO: Make Bosses
-  if (enemies.length <= (2 * bossLevel) / round) {
+  if (enemies.length <= round/bossLevel) {
     let bossNum = randomNumberBetween(1, 1);
     new Boss(bossFeatures[`boss-${bossNum}`]);
   }
@@ -680,6 +696,9 @@ const runGame = () => {
   //Total Points
   playerPointsDiv.innerHTML = playerPoints;
 
+  //Update Round
+  roundNumber.innerText = `Round ${round}`
+
   //Player/ Enemy Dies
   playerDeath(enemies);
   playerDeath(players);
@@ -693,8 +712,6 @@ const runGame = () => {
 //Run the game animation
 runGame();
 
-// TODO:
-// Create basic game flow
 
 let leftButton = document.querySelector("#left-button");
 let rightButton = document.querySelector("#right-button");
@@ -738,69 +755,3 @@ const gameMenu = document.querySelector(".game-menu")
 const menuButtonPress = () => {
   gameMenu.classList.toggle('hidden')
 }
-
-// document.addEventListener("keydown", (event) => {
-//   switch (event.key) {
-//     case "ArrowRight":
-//       console.log(event.key, " KEYDOWN");
-//       keyCodeMap[event.key].pressed = 1;
-//       break;
-//     case "ArrowLeft":
-//       console.log(event.key, " KEYDOWN");
-//       keyCodeMap[event.key].pressed = 1;
-//       break;
-//     case "Shift":
-//       console.log(event.key, " KEYDOWN");
-//       keyCodeMap[event.key].pressed = 1;
-//       break;
-//     case " ":
-//       console.log(event.code, " KEYDOWN");
-//       keyCodeMap[event.code].pressed = 1;
-//       break;
-//     case "a":
-//     case "A":
-//       console.log(event.code, " KEYDOWN");
-//       keyCodeMap[event.code].pressed = 1;
-//       break;
-//     case "d":
-//     case "D":
-//       console.log(event.code, " KEYDOWN");
-//       keyCodeMap[event.code].pressed = 1;
-//       break;
-//     default:
-//       console.log(event.key, " KEYDOWN Not configured");
-//   }
-// });
-
-// document.addEventListener("keyup", (event) => {
-//   switch (event.key) {
-//     case "ArrowRight":
-//       console.log(event.key, " KEYUP");
-//       keyCodeMap[event.key].pressed = 0;
-//       break;
-//     case "ArrowLeft":
-//       console.log(event.key, " KEYUP");
-//       keyCodeMap[event.key].pressed = 0;
-//       break;
-//     case "Shift":
-//       console.log(event.key, " KEYUP");
-//       keyCodeMap[event.key].pressed = 0;
-//       break;
-//     case " ":
-//       console.log(event.code, " KEYUP");
-//       keyCodeMap[event.code].pressed = 0;
-//       break;
-//     case "a":
-//     case "A":
-//       console.log(event.code, " KEYUP");
-//       keyCodeMap[event.code].pressed = 0;
-//       break;
-//     case "d":
-//     case "D":
-//       console.log(event.code, " KEYUP");
-//       keyCodeMap[event.code].pressed = 0;
-//       break;
-//     default:
-//       console.log(event.key, " KEYUP Not configured");
-//   }
-// });
